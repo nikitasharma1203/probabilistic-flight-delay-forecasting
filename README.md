@@ -80,24 +80,7 @@ This project introduces:
 
 ## 🏗️ System Architecture
 
-```text
-Raw BTS Flight Data
-        ↓
-Data Cleaning & Aggregation
-        ↓
-Feature Engineering (23 Features)
-        ↓
-Forecasting Models
-(SARIMA · LSTM · GRU · QRNN)
-        ↓
-Residual & Distribution Analysis
-        ↓
-Granger Causality Propagation Engine
-        ↓
-Operational Alert System
-        ↓
-Interactive Streamlit Dashboard
-```
+![Architecture](assets/architecture.png)
 
 ## Table of Contents
 
@@ -185,104 +168,6 @@ The target variable is the **daily mean departure delay (minutes) per airport**,
 
 ---
 
-## Installation & Setup
-
-### Prerequisites
-
-- Python 3.9+
-- pip or conda
-
-### 1. Clone / Download
-
-```bash
-git clone <repo-url>
-cd flight-delay-forecasting
-```
-
-### 2. Create Virtual Environment (recommended)
-
-```bash
-python -m venv venv
-source venv/bin/activate        # Linux/Mac
-venv\Scripts\activate           # Windows
-```
-
-### 3. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Download Data
-
-Obtain the BTS On-Time Performance files (Parquet format) for January 2023 – December 2025 from:
-
-```
-https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGJ
-```
-
-Fields required: `FL_DATE`, `OP_CARRIER`, `TAIL_NUM`, `ORIGIN`, `DEST`, `CRS_DEP_TIME`, `DEP_TIME`, `DEP_DELAY`, `CANCELLED`, `DIVERTED`, `CARRIER_DELAY`, `WEATHER_DELAY`, `NAS_DELAY`, `SECURITY_DELAY`, `LATE_AIRCRAFT_DELAY`, `CANCELLATION_CODE`
-
-Place all downloaded `.parquet` files in a `data/` directory and update the `DATA_PATH` variable in Cell 2 of the notebook.
-
----
-
-## Running the Project
-
-### Jupyter Notebook (full analysis)
-
-```bash
-jupyter notebook flight_delay.ipynb
-# or
-jupyter lab flight_delay.ipynb
-```
-
-Run cells sequentially from top to bottom. The notebook is designed to be fully reproducible with `SEED = 42`.
-
-> **Estimated runtime:** ~45–90 minutes on CPU (GRU/LSTM/QRNN training). GPU significantly reduces deep learning stages.
-
-### Streamlit Dashboard
-
-```bash
-streamlit run dash.py
-```
-
-Opens at `http://localhost:8501`. The dashboard uses pre-computed metrics from the notebook and generates synthetic demo time-series for visualization — no live data connection is required.
-
----
-
-## Data Pipeline
-
-```
-Raw BTS Parquet (22,085,189 rows)
-        ↓
-  Drop CANCELLED / DIVERTED
-  Drop NULL DEP_DELAY
-  Clip DEP_DELAY to [−60, 600] min
-  Fill delay-cause NaN → 0
-  Derive DAY_OF_WEEK from FL_DATE
-  Drop CANCELLATION_CODE
-        ↓
-  Filter to TOP 10 hubs by departure volume:
-  ATL · DEN · DFW · ORD · CLT · LAX · PHX · LAS · SEA · MCO
-        ↓
-  Aggregate: daily mean DEP_DELAY per airport
-  (7,255,696 hub-filtered rows → 8,819 daily rows × 10 cols)
-        ↓
-  Feature Engineering (23 features):
-  • Cyclical: sin/cos month, day-of-week
-  • Lags: lag_1, lag_2, lag_3, lag_7, lag_14
-  • Rolling: mean_7, mean_14, mean_30; std_7
-  • Calendar: is_weekend, is_monday, is_friday
-  • Seasonal: is_summer (Jun–Aug), is_holiday_season (Nov–Dec)
-  • pct_delayed (share of flights delayed >15 min)
-        ↓
-  Train / Test Split (no leakage):
-  Train: 2023-01-01 – 2024-05-31 (516 days)
-  Test:  2024-06-01 – 2025-05-31 (366 days)
-```
-
----
 
 ## Models Implemented
 
@@ -389,31 +274,6 @@ The Streamlit dashboard (`dash.py`) has 8 pages:
 
 ---
 
-## Reproducibility
-
-All random seeds are fixed globally:
-
-```python
-SEED = 42
-import random, numpy as np, torch
-random.seed(SEED)
-np.random.seed(SEED)
-torch.manual_seed(SEED)
-os.environ["PYTHONHASHSEED"] = str(SEED)
-```
-
-Train/test split is **chronological** (no shuffling, no data leakage). All lags use `.shift(1)` to prevent look-ahead bias. Rolling statistics use `.shift(1).rolling(window)`.
 
 ---
 
-## Dependencies
-
-See `requirements.txt` for the full pinned list. Core libraries:
-
-- **Data:** `pandas`, `numpy`, `pyarrow`
-- **Statistics:** `statsmodels`, `pmdarima`, `scipy`
-- **Deep Learning:** `torch`, `scikit-learn`
-- **Visualization:** `matplotlib`, `seaborn`, `plotly`
-- **Dashboard:** `streamlit`
-
----
