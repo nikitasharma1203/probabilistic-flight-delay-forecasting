@@ -1,15 +1,103 @@
-# Probabilistic Flight Delay Forecasting with Cross-Airport Delay Propagation Analysis
+# ✈️ Probabilistic Flight Delay Forecasting
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![PyTorch](https://img.shields.io/badge/PyTorch-DeepLearning-red)
+![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-ff4b4b)
+![Statsmodels](https://img.shields.io/badge/Statsmodels-TimeSeries-green)
+![Pandas](https://img.shields.io/badge/Pandas-DataAnalysis-150458)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-ML-orange)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-## 🌐 Live App
+<p align="center">
+  <a href="#-overview">Overview</a> •
+  <a href="#-highlights">Highlights</a> •
+  <a href="#-dashboard-preview">Dashboard</a> •
+  <a href="#-system-architecture">Architecture</a> •
+  <a href="#-models-implemented">Models</a> •
+  <a href="#-key-results">Results</a>
+</p>
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://flightdelayforecasting.streamlit.app/)
 
+![Banner](assets/banner.png)
+<p align="center">
+  <b>Aarsh Adhvaryu · Nikita Sharma · Ram Sharma</b>
+</p>
+---
 
-> **Authors:** Aarsh Adhvaryu · Nikita Sharma · Ram Sharma  
-> **Data:** US Bureau of Transportation Statistics (BTS) · January 2023 – December 2025  
-> **Scope:** 10 busiest US hub airports · ~22 million raw flight records
+## 🌐 Live Dashboard
+👉 [Launch Streamlit App](https://flightdelayforecasting.streamlit.app/)
 
 ---
+
+## 📌 Overview
+
+A probabilistic time-series forecasting and propagation-analysis system for predicting cascading airport delays using:
+
+- SARIMA
+- GRU / LSTM
+- Quantile Recurrent Neural Networks (QRNN)
+- Granger Causality Analysis
+
+The system models how delays spread across major US hub airports and generates operational downstream alert predictions with calibrated uncertainty intervals.
+
+---
+
+## 🚀 Highlights
+
+- Processed **22M+ BTS flight records**
+- Forecasted delays across **10 major US hub airports**
+- Achieved **23.5% RMSE improvement** over baseline models
+- Detected **68 statistically significant propagation pathways**
+- Built an hourly alert system achieving **0.760 Macro F1**
+- Developed a fully interactive **Streamlit operations dashboard**
+
+---
+
+## 🖥️ Dashboard Preview
+
+![Overview](assets/dash1.png)
+
+![Ops Center](assets/dash2.png)
+
+---
+
+## 🧠 Why This Matters
+
+Flight delays create cascading operational disruptions through:
+
+- aircraft rotations
+- crew scheduling
+- passenger connections
+- airport congestion
+
+Traditional systems forecast airports independently.
+
+This project introduces:
+- probabilistic uncertainty estimation
+- cross-airport propagation modeling
+- operational alert systems for downstream disruption prediction
+
+---
+
+## 🏗️ System Architecture
+
+```text
+Raw BTS Flight Data
+        ↓
+Data Cleaning & Aggregation
+        ↓
+Feature Engineering (23 Features)
+        ↓
+Forecasting Models
+(SARIMA · LSTM · GRU · QRNN)
+        ↓
+Residual & Distribution Analysis
+        ↓
+Granger Causality Propagation Engine
+        ↓
+Operational Alert System
+        ↓
+Interactive Streamlit Dashboard
+```
 
 ## Table of Contents
 
