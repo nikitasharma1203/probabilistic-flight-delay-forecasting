@@ -10,10 +10,10 @@
 <p align="center">
   <a href="#-overview">Overview</a> •
   <a href="#-highlights">Highlights</a> •
-  <a href="#-dashboard-preview">Dashboard</a> •
-  <a href="#-system-architecture">Architecture</a> •
-  <a href="#-models-implemented">Models</a> •
-  <a href="#-key-results">Results</a>
+  <a href="#-dashboard">Dashboard</a> •
+  <a href="#-architecture">Architecture</a> •
+  <a href="#models">Models</a> •
+  <a href="#results">Results</a>
 </p>
 
 
@@ -82,21 +82,6 @@ This project introduces:
 
 ![Architecture](assets/architecture.png)
 
-## Table of Contents
-
-1. [Project Overview](#project-overview)
-2. [Research Questions](#research-questions)
-3. [Repository Structure](#repository-structure)
-4. [Installation & Setup](#installation--setup)
-5. [Running the Project](#running-the-project)
-6. [Data Pipeline](#data-pipeline)
-7. [Models Implemented](#models-implemented)
-8. [Key Results](#key-results)
-9. [Dashboard Guide](#dashboard-guide)
-10. [Reproducibility](#reproducibility)
-11. [Dependencies](#dependencies)
-
----
 
 ## Project Overview
 
