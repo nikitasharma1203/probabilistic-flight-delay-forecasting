@@ -52,7 +52,7 @@ The system models how delays spread across major US hub airports and generates o
 
 ---
 
-## 🖥️ Dashboard Preview
+## 🖥️ Dashboard
 
 ![Overview](assets/dash1.png)
 
@@ -78,7 +78,7 @@ This project introduces:
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ Architecture
 
 ![Architecture](assets/architecture.png)
 
@@ -110,17 +110,6 @@ This project builds a **probabilistic forecasting pipeline** that:
 
 The target variable is the **daily mean departure delay (minutes) per airport**, benchmarked against the US BTS standard (≥15 min = delay).
 
----
-
-## Research Questions
-
-| # | Question | Finding |
-|---|----------|---------|
-| **RQ1** | Are ARIMA/LSTM residuals Gaussian? | ❌ Rejected for all 10 airports, all 4 models (Shapiro-Wilk p < 10⁻¹², skewness 1.3–3.7, excess kurtosis 4–22). Log-Normal (shifted) provides best fit (AIC 3600 vs Normal 3793). |
-| **RQ2** | Does QRNN achieve PICP ≥ 0.90? | ⚠️ Partially: range 0.717–0.855. Best: PHX 0.855, ORD 0.852. Temperature scaling applied at under-covering airports. |
-| **RQ3** | Do hub airports exhibit significant delay propagation? | ✅ Yes — 68/90 Granger pairs significant (75.6%), mean tail-chain carry-over 74.2%, hourly alert system macro F1 = **0.760** (vs 0.364 daily — 2× improvement). |
-
----
 
 ## Repository Structure
 
@@ -169,7 +158,7 @@ The target variable is the **daily mean departure delay (minutes) per airport**,
 ---
 
 
-## Models Implemented
+## Models
 
 ### Baseline Models
 
@@ -204,7 +193,7 @@ The target variable is the **daily mean departure delay (minutes) per airport**,
 
 ---
 
-## Key Results
+## Results
 
 ### Champion Model: SARIMA (PHX focus airport)
 
@@ -246,34 +235,3 @@ Highest precision: **PHX→DFW** Precision = 0.930 (near-zero false alarms)
 Mean tail-chain carry-over: **74.2%** across 793,941 chain pairs
 
 ---
-
-## Dashboard Guide
-
-![Map](dashboard/dash1.png)
-![Map](dashboard/dash2.png)
-
-
-The Streamlit dashboard (`dash.py`) has 8 pages:
-
-| Page | Description |
-|------|-------------|
-| 📊 Overview | Pipeline summary, key KPIs, PHX RMSE chart |
-| 🚨 Ops Center | Live propagation risk map, active alerts, recommended actions |
-| 🛬 Airport Explorer | Per-airport forecast chart, QRNN reliability diagram, model comparison |
-| 📈 Model Comparison | PHX focus, master table (all airports), ARIMA vs GRU vs QRNN |
-| 🔬 Noise Analysis | Residual distributions, normality tests, log-likelihood comparison |
-| 🌐 Propagation | Granger causality heatmap, tail-number chains, top propagation pairs |
-| 🕐 Hourly Alert System | Per-pair Precision/Recall/F1, daily vs hourly improvement |
-| ❓ RQ Answers | Definitive answers to RQ1, RQ2, RQ3 with supporting charts |
-
-**Ops Center alert mechanics:**
-- Source signal: rolling 3-hour average of hourly mean departure delay
-- Alert fires when source signal > configurable threshold (default: 15 min)
-- Target window: Granger lag × 24h ± 6h slack
-- Only 68 Granger-significant pairs (p < 0.05) are used
-
----
-
-
----
-
